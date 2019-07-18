@@ -1,4 +1,3 @@
-{{ if .Values.enabled }}
 # This manifest installs the Istio install-cni container, as well
 # as the Istio CNI plugin and config on
 # each master and worker node in a Kubernetes cluster.
@@ -116,4 +115,3 @@ spec:
         - name: etc-cni-dir
           hostPath:
             path: /etc/cni
-{{ end }}

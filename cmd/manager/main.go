@@ -96,7 +96,7 @@ func main() {
 	}
 
 	// Setup all Controllers
-	if err := controller.AddToManager(mgr); err != nil {
+	if err := controller.Init(mgr); err != nil {
 		log.Error(err, "")
 		os.Exit(1)
 	}

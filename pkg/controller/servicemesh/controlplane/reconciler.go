@@ -98,7 +98,7 @@ func (r *ControlPlaneReconciler) Reconcile() (reconcile.Result, error) {
 	// these components have to be installed in the specified order
 	orderedComponents := []string{
 		"istio", // core istio resources
-		"istio/charts/istio_cni",
+		"istio/charts/istio_cni", // if you change its position, make sure to update the call to removeElement() below
 		"istio/charts/security",
 		"istio/charts/prometheus",
 		"istio/charts/tracing",
@@ -110,6 +110,10 @@ func (r *ControlPlaneReconciler) Reconcile() (reconcile.Result, error) {
 		"istio/charts/grafana",
 		"istio/charts/kiali",
 	}
+	if !common.IsCNIEnabled {
+		orderedComponents = removeElement(orderedComponents, 1)
+	}
+
 	for _, componentName := range orderedComponents {
 		componentsProcessed[componentName] = seen
 		err = r.processComponentManifests(componentName)
@@ -208,4 +212,8 @@ func isEnabled(spec v1.HelmValuesType) bool {
 		}
 	}
 	return false
+}
+
+func removeElement(slice []string, s int) []string {
+    return append(slice[:s], slice[s+1:]...)
 }

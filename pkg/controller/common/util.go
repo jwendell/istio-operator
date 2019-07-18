@@ -3,8 +3,6 @@ package common
 import (
 	"github.com/go-logr/logr"
 
-	maistrav1 "github.com/maistra/istio-operator/pkg/apis/maistra/v1"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -86,13 +84,4 @@ func SetAnnotation(resource metav1.Object, annotation, value string) {
 	}
 	annotations[annotation] = value
 	resource.SetAnnotations(annotations)
-}
-
-func IsCNIEnabled(mesh *maistrav1.ServiceMeshControlPlane) bool {
-	val := mesh.Spec.Istio["istio_cni"]
-	if cni, ok := val.(map[string]interface{}); ok {
-		val = cni["enabled"]
-		return val == "y" || val == "yes" || val == "true" || val == "on" || val == true
-	}
-	return false
 }
