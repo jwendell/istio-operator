@@ -27,6 +27,8 @@ function prometheus_patch_deployment() {
             name: secret-prometheus-tls\
           - mountPath: /etc/proxy/htpasswd\
             name: secret-htpasswd\
+          - mountPath: /etc/proxy/secrets\
+            name: secret-prometheus-proxy\
           args:\
           - -provider=openshift\
           - -https-address=:3001\
@@ -38,7 +40,7 @@ function prometheus_patch_deployment() {
           - '\''-openshift-sar={"namespace": "{{ .Release.Namespace }}", "resource": "pods", "verb": "get"}'\''\
           - -client-secret-file=/var/run/secrets/kubernetes.io/serviceaccount/token\
           - -openshift-service-account=prometheus\
-          - -cookie-secret=SECRET\
+          - -cookie-secret-file=/etc/proxy/secrets/session_secret\
           - -tls-cert=/etc/tls/private/tls.crt\
           - -tls-key=/etc/tls/private/tls.key\
           - -openshift-ca=/etc/pki/tls/cert.pem\
@@ -52,7 +54,11 @@ function prometheus_patch_deployment() {
       - name: secret-htpasswd\
         secret:\
           defaultMode: 420\
-          secretName: htpasswd' \
+          secretName: htpasswd\
+      - name: secret-prometheus-proxy\
+        secret:\
+          defaultMode: 420\
+          secretName: prometheus-proxy' \
       -e 's/^\(.*\)containers:\(.*\)$/\1serviceAccountName: prometheus\
 \1containers:\2/' \
       -e 's/^\(.*\)\(- .--config.file.*\)$/\1\2\
