@@ -12,7 +12,7 @@ metadata:
       The Maistra Operator enables you to install, configure, and manage an instance of Maistra service mesh. Maistra is based on the open source Istio project.
 
     containerImage: maistra/istio-ubi8-operator:2.0.0
-    createdAt: 2020-10-07T13:52:22CEST
+    createdAt: 2020-10-09T13:55:56EDT
     support: Red Hat, Inc. 
     olm.skipRange: ">=1.0.2 <2.0.0"
     operators.openshift.io/infrastructure-features: '[]'
@@ -649,6 +649,14 @@ spec:
           - 'urn:alm:descriptor:com.tectonic.ui:fieldDependency:tracing.type:Jaeger'
           - 'urn:alm:descriptor:com.tectonic.ui:select:Memory'
           - 'urn:alm:descriptor:com.tectonic.ui:select:Elasticsearch'
+      - displayName: Mixer installation
+        description: Select the type of mixer
+        path: tracing.type
+        x-descriptors:
+          - 'urn:alm:descriptor:com.tectonic.ui:fieldGroup:mixer'
+          - 'urn:alm:descriptor:com.tectonic.ui:select:None'
+          - 'urn:alm:descriptor:com.tectonic.ui:select:Mixer'
+          - 'urn:alm:descriptor:com.tectonic.ui:select:Istiod'
       - displayName: Install 3Scale Adapter
         description: Set to true to install the Istio 3Scale adapter
         path: addons.3scale.enabled
